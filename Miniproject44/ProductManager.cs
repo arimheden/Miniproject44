@@ -252,6 +252,93 @@ internal class ProductManager
         }
     }
 
+    // Edit product by Id
+    public void EditProduct(ref List<Product> products)
+    {
+
+        Console.Write("Edit Product: ");
+
+        // Request user input
+        string editString = this.userInput();
+
+        // Validate user input
+        try
+        {
+            this.validateInput(editString, "id");
+            if (products.Any(product => product.Id == Convert.ToInt32(editString)))
+            {
+                Console.Write("Enter new category (blank to keep existing): ");
+                string newCategory = this.userInput();
+                if (!String.IsNullOrEmpty(newCategory))
+                {
+                    this.validateInput(newCategory, "category");
+                    try
+                    {
+                        foreach (Product product in products.Where(w => w.Id == Convert.ToInt32(editString)))
+                        {
+                            product.Category = newCategory;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(e.Message);
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                    }
+                }
+
+                Console.Write("Enter new name (blank to keep existing): ");
+                string newName = this.userInput();
+                if (!String.IsNullOrEmpty(newName))
+                {
+                    this.validateInput(newName, "name");
+                    try
+                    {
+                        foreach (Product product in products.Where(w => w.Id == Convert.ToInt32(editString)))
+                        {
+                            product.Name = newName;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(e.Message);
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                    }
+                }
+                    
+                Console.Write("Enter new price (blank to keep existing): ");
+                string userInput = this.userInput();
+                if (!String.IsNullOrEmpty(userInput))
+                {
+                    this.validateInput(userInput, "price");
+                    try
+                    {
+                        decimal newPrice = Convert.ToDecimal(userInput);
+                        foreach (Product product in products.Where(w => w.Id == Convert.ToInt32(editString)))
+                        {
+                            product.Price = newPrice;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(e.Message);
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                    }
+                }
+            }
+            else throw new ArgumentException("Product does not exist!");
+
+        }
+        catch (Exception e)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(e.Message);
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+    }
+
     // Save products to json file
     public void SaveProducts(List<Product> products)
     {
@@ -298,7 +385,7 @@ internal class ProductManager
             keypressed = Console.ReadKey(true);
             numKey = keypressed.Key.ToString().Trim('D');
 
-        } while (!Regex.IsMatch(numKey, @"^[1-8]+\z"));
+        } while (!Regex.IsMatch(numKey, @"^[1-9]+\z"));
         return numKey;
     }
 }

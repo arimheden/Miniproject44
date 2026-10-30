@@ -45,7 +45,7 @@ while (true)
 
         // Edit product
         case "5":
-            prodManager.ProductStatistics(products);
+            prodManager.EditProduct(ref products);
             break;
 
         // Show statistics
