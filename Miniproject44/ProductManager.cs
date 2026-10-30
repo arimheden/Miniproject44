@@ -171,13 +171,39 @@ internal class ProductManager
     }
 
     // Show statistics
-    public void ProductStatistics(List<Product> productList)
+    public void ProductStatistics(ref List<Product> products)
     {
         //int productCount = productList.Count;
         //Console.WriteLine("- Total Products: " + productCount);
+        Console.WriteLine("========= STATISTICS =========");
+        Console.WriteLine();
 
+        Product expensiveProduct = products.OrderByDescending(a => a.Price).First();
+        Product cheapProduct = products.OrderBy(a => a.Price).First();
+        decimal average = products.Average(a => a.Price);
 
-        Console.WriteLine("- Sum: " + productList.Sum(product => product.Price));
+        Console.WriteLine("Most Expensive Product:");
+        Console.WriteLine();
+
+        Console.WriteLine(expensiveProduct.Name + " - " + expensiveProduct.Price);
+
+        Console.WriteLine("Cheapest Product:");
+
+        Console.WriteLine(cheapProduct.Name + " - " + cheapProduct.Price);
+        Console.WriteLine();
+
+        Console.WriteLine("Average Price:");
+
+        Console.WriteLine(average + " kr");
+        Console.WriteLine();
+
+        Console.WriteLine("Products per Category:");
+        var categories = products.DistinctBy(a => a.Category);
+        foreach (var category in categories) {
+            Console.Write(category.Category + ": ");
+            decimal categorySum = products.Where(a => a.Category.Equals(category.Category)).Count();
+            Console.WriteLine(categorySum);
+        }
 
         //int average = 0;
         //average = sumNumbers / productCount;

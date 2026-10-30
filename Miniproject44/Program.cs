@@ -50,7 +50,7 @@ while (true)
 
         // Show statistics
         case "6":
-            prodManager.ProductStatistics(products);
+            prodManager.ProductStatistics(ref products);
             break;
 
         // Save product list and exit program
