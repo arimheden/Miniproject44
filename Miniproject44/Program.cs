@@ -43,17 +43,28 @@ while (true)
             prodManager.DeleteProduct(ref products);
             break;
 
-        // Show statistics
+        // Edit product
         case "5":
             prodManager.ProductStatistics(products);
             break;
 
-        // Save product list and exit program
+        // Show statistics
         case "6":
-            StreamWriter sw = new StreamWriter("products.json");
-            var jsonProductList = JsonSerializer.Serialize(products);
-            sw.Write(jsonProductList.ToString());
-            sw.Close();
+            prodManager.ProductStatistics(products);
+            break;
+
+        // Save product list and exit program
+        case "7":
+            prodManager.SaveProducts(products);
+            break;
+
+        // Load product list and exit program
+        case "8":
+            prodManager.LoadProducts(ref products);
+            break;
+
+        // Exit program
+        case "9":
             Environment.Exit(0);
             break;
     }

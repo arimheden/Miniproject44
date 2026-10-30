@@ -11,7 +11,7 @@ namespace Miniproject44
         public string Name { get; set; }
         public decimal Price { get; set; }
 
-        static int currentId = 1000;
+        static public int currentId = 1000;
 
         public Product (string Category, string Name, decimal Price) {
             this.Category = Category;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace Miniproject44;
@@ -251,6 +252,30 @@ internal class ProductManager
         }
     }
 
+    // Save products to json file
+    public void SaveProducts(List<Product> products)
+    {
+        StreamWriter sw = new StreamWriter("products.json");
+        var jsonProductList = JsonSerializer.Serialize(products);
+        sw.Write(jsonProductList.ToString());
+        sw.Close();
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("Product list has been saved!");
+        Console.ForegroundColor = ConsoleColor.Gray;
+    }
+
+    // Save products to json file
+    public void LoadProducts(ref List<Product> products)
+    {
+        string json = File.ReadAllText("products.json");
+        var jsonProductList = JsonSerializer.Deserialize<List<Product>>(json);
+        products = jsonProductList;
+        Product.currentId = products.Max(a => a.Id);
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("Product list has been loaded!");
+        Console.ForegroundColor = ConsoleColor.Gray;
+    }
+
     // Display menu and wait for key press
     public string ProductListMenu()
     {
@@ -259,8 +284,11 @@ internal class ProductManager
         Console.WriteLine("2. View Products");
         Console.WriteLine("3. Search Product");
         Console.WriteLine("4. Delete Product");
-        Console.WriteLine("5. Statistics");
-        Console.WriteLine("6. Exit");
+        Console.WriteLine("5. Edit Product");
+        Console.WriteLine("6. Statistics");
+        Console.WriteLine("7. Save Products");
+        Console.WriteLine("8. Load Products");
+        Console.WriteLine("9. Exit");
         Console.WriteLine();
 
         ConsoleKeyInfo keypressed;
@@ -270,7 +298,7 @@ internal class ProductManager
             keypressed = Console.ReadKey(true);
             numKey = keypressed.Key.ToString().Trim('D');
 
-        } while (!Regex.IsMatch(numKey, @"^[1-6]+\z"));
+        } while (!Regex.IsMatch(numKey, @"^[1-8]+\z"));
         return numKey;
     }
 }
